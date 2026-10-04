@@ -12,7 +12,7 @@ from typing import List, Dict, Any, Tuple
 DEVA_TO_ASCII_DIGITS = str.maketrans("०१२३४५६७८९", "0123456789")
 
 # Registration number pattern e.g., INZ000186937, INH000000001, INP..., INA...
-REGISTRATION_PATTERN = re.compile(r"\bIN[A-Z0-9]{9,12}\b", re.IGNORECASE)
+REGISTRATION_PATTERN = re.compile(r"\bIN[A-Z]\d{9}\b", re.IGNORECASE)
 
 
 def normalize_text(text: str) -> str:
@@ -53,7 +53,7 @@ RULES_CONFIG = [
         "severity": "high",
         "patterns": [
             r"\b(100%|guaranteed|assured|fixed)\s+(returns?|profit|gain|income|faayda)\b",
-            r"\b(guaranteed|assured)\s+(paisa|munafa|return)\b",
+            r"\b(guaranteed|assured)\s+(?:.*?\s+)?(?:paisa|munafa|return|profit)\b",
             r"\b(pakka\s+munafa|fixed\s+return|pakka\s+profit)\b",
             r"(गारंटी|पक्का\s*मुनाफा|100%\s*मुनाफा|तय\s*रिटर्न|निश्चित\s*मुनाफा|पक्का\s*फायदा)",
             r"\bpromise\s+(?:of\s+)?(?:guaranteed|high|fixed)\s+returns?\b",
@@ -71,10 +71,10 @@ RULES_CONFIG = [
         "weight": 25,
         "severity": "high",
         "patterns": [
-            r"\b(?:\d+[%]|rs\.?\s*\d+|\d+\s*(?:hazaar|k|rupaye))\s*(?:daily|per\s*day|weekly|per\s*month|har\s*din|har\s*hafte|roz)\b",
+            r"\b(?:\d+[%]|rs\.?\s*[\d,]+|[\d,]+\s*(?:hazaar|k|rupaye)?)\s*(?:daily|per\s*day|weekly|per\s*month|har\s*din|har\s*hafte|roz)\b",
             r"\b(?:daily|roz)\s+(?:earn\s+)?(?:\d+|rs\.?\s*\d+|kamao|kamaaye|kamaein)\b",
             r"\b(?:paisa|money|amount)\s+(?:double|triple|dugna|2x|3x|10x)\b",
-            r"(रोज़\s*(?:कमाएं|कमाओ|\d+)|हर\s*(?:दिन|हफ्ते|महीने)\s*\d+[%]|पैसा\s*(?:डबल|दोगुना))",
+            r"(रोज़\s*(?:[\d,]+\s*)?(?:कमाएं|कमाओ)|हर\s*(?:दिन|हफ्ते|महीने)\s*[\d,]+[%]?|पैसा\s*(?:डबल|दोगुना))",
             r"\b(?:double\s+your\s+money|turn\s+\d+\s+into\s+\d+)\b",
             r"\b(?:5000|10000|20000|50000)\s*(?:roz|daily|kamao)\b",
         ],
@@ -93,7 +93,7 @@ RULES_CONFIG = [
         "patterns": [
             r"\b(?:risk[- ]free|zero\s*risk|no\s*risk|100%\s*safe|no\s*loss)\b",
             r"\b(?:bina\s*risk|koi\s*nuksan\s*nahi|zero\s*loss)\b",
-            r"(रिस्क\s*फ्री|बिना\s*जोखिम|कोई\s*नुकसान\s*नहीं|शून्य\s*जोखिम)",
+            r"(रिस्क\s*फ्री|बिना\s*(?:किसी\s*)?जोखिम|कोई\s*नुकसान\s*नहीं|शून्य\s*जोखिम)",
         ],
         "en": {
             "why_dangerous": "Claims of 'zero risk' or 'no loss' are misleading and strictly illegal in market securities trading."
@@ -108,8 +108,8 @@ RULES_CONFIG = [
         "weight": 14,
         "severity": "medium",
         "patterns": [
-            r"\b(?:limited\s+seats?|hurry\s+up|last\s+chance|valid\s+today\s+only|offer\s+ends)\b",
-            r"\b(?:jaldi\s+karo|aaj\s+hi|sirf\s+aaj|aakhiri\s+mauka|few\s+seats\s+left)\b",
+            r"\b(?:limited\s+seats?|hurry\s+up|last\s+chance|valid\s+today\s+only|offer\s+ends|before\s+midnight)\b",
+            r"\b(?:jaldi\s+karo|aaj\s+hi|sirf\s+aaj|aakhiri\s+mauka|few\s+seats\s+left|turant\s+unblock)\b",
             r"(जल्दी\s*करें|आज\s*ही|सिर्फ़\s*आज|आख़िरी\s*मौका|सीमित\s*सीटें|\d+\s*सीट\s*बाकी)",
         ],
         "en": {
@@ -127,7 +127,7 @@ RULES_CONFIG = [
         "patterns": [
             r"\b(?:transfer\s+(?:now|immediately|funds|rs|money)|send\s+money\s+now)\b",
             r"\b(?:abhi\s+(?:paise\s+)?transfer\s+karo|turant\s+transfer|bhejo)\b",
-            r"(अभी\s*पैसे\s*(?:भेजें|डालें)|तुरंत\s*ट्रांसफर\s*करें|तुरंत\s*भुगतान)",
+            r"(अभी\s*पैसे\s*(?:भेजें|डालें)|तुरंत\s*(?:पैसे\s*)?(?:भेजें|डालें|ट्रांसफर\s*करें|भुगतान))",
         ],
         "en": {
             "why_dangerous": "Demands for urgent direct bank or UPI fund transfers prevent you from verifying credentials and consulting financial advisors."
@@ -144,7 +144,7 @@ RULES_CONFIG = [
         "patterns": [
             r"\b(?:otp\s*(?:batao|bataiye|share|send)|share\s*(?:your\s*)?(?:pin|password|cvv|otp))\b",
             r"\b(?:enter|provide|tell)\s+(?:your\s+)?(?:otp|pin|password|mpin)\b",
-            r"(ओटीपी\s*(?:बताएं|बताओ|भेजें|साझा)|पिन\s*(?:बताएं|भेजें)|पासवर्ड\s*(?:बताएं|भेजें))",
+            r"(ओटीपी\s*(?:बताएं|बताओ|भेजें|साझा\s*करें)|पिन\s*(?:बताएं|भेजें)|पासवर्ड\s*(?:बताएं|भेजें))",
         ],
         "en": {
             "why_dangerous": "CRITICAL RISK: Legitimate institutions NEVER request OTP, PIN, password, or CVV. Disclosing OTP allows attackers to siphon all your funds."
@@ -162,7 +162,7 @@ RULES_CONFIG = [
             r"\b(?:sebi|rbi|nsdl|cdsl|gov(?:ernment)?)\s*(?:approved|registered|certified|licensed|recognized)\b",
             r"\b(?:sebi\s*reg(?:istration)?|government\s*approved)\b",
             r"(सेबी\s*रजिस्टर्ड|सेबी\s*से\s*मान्यता|सरकारी\s*मंज़ूरी|आरबीआई\s*अनुमोदित)",
-            r"\bIN[A-Z0-9]{9,12}\b",
+            r"\bin[a-z]\d{9}\b",
         ],
         "en": {
             "why_dangerous": "Scammers frequently copy legitimate SEBI registration numbers or forge regulatory certificates to manufacture instant credibility."
@@ -178,7 +178,7 @@ RULES_CONFIG = [
         "severity": "high",
         "patterns": [
             r"\b(?:official\s+sebi|rbi\s+officer|sebi\s+team|cyber\s+police\s+officer|institutional\s+desk)\b",
-            r"\b(?:sebi\s+authorized\s+officer|ceo\s+direct|fund\s+manager\s+desk)\b",
+            r"\b(?:sebi\s+authorized|ceo\s+direct|fund\s+manager\s+desk|official\s+rbi)\b",
             r"(सेबी\s*अधिकारी|आरबीआई\s*ऑफिसर|सरकारी\s*अधिकारी)",
         ],
         "en": {
@@ -194,7 +194,7 @@ RULES_CONFIG = [
         "weight": 24,
         "severity": "high",
         "patterns": [
-            r"\b(?:operator\s+tip|insider\s+(?:tip|news|information)|sure\s*shot\s*(?:tip|call)|vip\s+tip|jackpot\s+call)\b",
+            r"\b(?:operator\s+tip|insider\s+(?:tip|news|information)|sure\s*shot\s*(?:tip|call)?|vip\s+tip|jackpot\s+call)\b",
             r"\b(?:pakki\s+tip|super\s+tip|operator\s+call|sure\s+profit\s+call)\b",
             r"(सुपर\s*टिप|पक्की\s*टिप|ऑपरेटर\s*(?:टिप|कॉल)?|इनसाइडर\s*(?:टिप|न्यूज़)|जैकपॉट\s*कॉल)",
         ],
@@ -212,7 +212,7 @@ RULES_CONFIG = [
         "severity": "medium",
         "patterns": [
             r"\b(?:join\s+(?:our\s+)?(?:group|channel|community|vip\s+group)|telegram\s+group|whatsapp\s+group)\b",
-            r"\b(?:group\s+join\s+karo|join\s+kijiye|channel\s+link)\b",
+            r"\b(?:group\s+join\s+karo|join\s+kijiye|channel\s+link|join\s+group)\b",
             r"(ग्रुप\s*जॉइन\s*करें|टेलीग्राम\s*ग्रुप|व्हाट्सऐप\s*ग्रुप|ग्रुप\s*में\s*जुड़ें)",
             r"(?:t\.me/|chat\.whatsapp\.com/|wa\.me/)",
         ],
@@ -231,7 +231,7 @@ RULES_CONFIG = [
         "patterns": [
             r"\b(?:refer\s+(?:and|&)\s+earn|add\s+members?|downline|referral\s+commission|multi\s*level)\b",
             r"\b(?:member\s+jodo|chain\s+system|referral\s+bonus|har\s+member\s+pe)\b",
-            r"(रेफर\s*करें\s*और\s*कमाएं|मेंबर\s*जोड़ें|चेन\s*सिस्टम|रेफरल\s*कमीशन)",
+            r"(रेफर\s*करें\s*और\s*कमाएं|मेंबर\s*(?:जोड़ें|जोडो)|चेन\s*सिस्टम|रेफरल\s*कमीशन)",
         ],
         "en": {
             "why_dangerous": "Multilevel pyramid schemes focus on member recruitment commissions rather than legitimate investment activities, leading to inevitable collapse."
@@ -246,7 +246,7 @@ RULES_CONFIG = [
         "weight": 15,
         "severity": "medium",
         "patterns": [
-            r"\b(?:my\s+(?:uncle|friend|brother|sister)\s+earned|profit\s+screenshot|proof\s+of\s+payment|live\s+withdrawal\s+proof)\b",
+            r"\b(?:my\s+(?:uncle|friend|brother|sister)\s+earned|profit\s+screenshot|proof\s+of\s+payment|live\s+withdrawal\s+proof|live\s+proof)\b",
             r"\b(?:screenshot\s+dekho|proof\s+bhi\s+hai|kamai\s+ka\s+proof)\b",
             r"(मुनाफे\s*का\s*सबूत|स्क्रीनशॉट\s*देखें|पेमेंट\s*प्रूफ|इन्होंने\s*कमाया)",
         ],
@@ -263,7 +263,7 @@ RULES_CONFIG = [
         "weight": 26,
         "severity": "high",
         "patterns": [
-            r"\b(?:\.apk\b|install\s+(?:this\s+)?app|download\s+(?:the\s+)?(?:apk|app)|new\s+trading\s+app)\b",
+            r"\b(?:\.apk\b|install\s+(?:.*?\s+)?(?:app|apk)|download\s+.*?(?:apk|app)|new\s+.*?trading\s+app|\btrading\s+app\b)\b",
             r"\b(?:app\s+download\s+karo|apk\s+file|install\s+kijiye)\b",
             r"(ऐप\s*इंस्टॉल\s*करें|एपीके\s*डाउनलोड|नया\s*ट्रेडिंग\s*ऐप|\.apk)",
         ],
@@ -280,9 +280,9 @@ RULES_CONFIG = [
         "weight": 28,
         "severity": "high",
         "patterns": [
-            r"\b(?:pay\s+(?:fee|tax|charge|deposit)\s+to\s+withdraw|withdrawal\s+fee|release\s+fee)\b",
+            r"\b(?:pay\s+.*?(?:fee|tax|charge|deposit)\s+to\s+withdraw|withdrawal\s+fee|release\s+fee)\b",
             r"\b(?:withdrawal\s+ke\s+liye\s+fees|tax\s+jama\s+karo|paise\s+nikalne\s+ke\s+liye)\b",
-            r"(निकासी\s*के\s*लिए\s*(?:फीस|टैक्स)|पैसे\s*निकालने\s*के\s*लिए\s*फीस)",
+            r"(?:निकासी|पैसे\s*निकालने|विड्रॉल)\s*के\s*लिए\s*.*?(?:फीस|टैक्स|चार्ज|शुल्क)",
         ],
         "en": {
             "why_dangerous": "Demanding advance fees, taxes, or release charges to unblock frozen profit balances is a classic sign of an extortionate scam."

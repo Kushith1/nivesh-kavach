@@ -47,16 +47,16 @@ PROHIBITED_PATTERNS = [
     # Buy / Sell / Hold advice
     re.compile(r"\b(?:strong\s+)?(?:buy|sell|hold)\s+(?:call|recommendation|rating|stock|shares?|token|coin)\b", re.IGNORECASE),
     re.compile(r"\b(?:we\s+recommend\s+(?:buying|selling|investing)|you\s+should\s+(?:buy|sell|invest\s+in))\b", re.IGNORECASE),
-    re.compile(r"\b(?:खरीदें|बेचें|होल्ड\s*करें|शेयर\s*खरीदने\s*की\s*सलाह)\b", re.IGNORECASE),
+    re.compile(r"(?:खरीदें|बेचें|होल्ड\s*करें|शेयर\s*खरीदने\s*की\s*सलाह)", re.IGNORECASE),
     
     # Target price and stop loss
     re.compile(r"\b(?:target\s*price|target\s*of\s*(?:rs\.?|₹|\$)?\s*\d+|stop\s*loss)\b", re.IGNORECASE),
-    re.compile(r"\b(?:टारगेट\s*प्राइस|स्टॉप\s*लॉस)\b", re.IGNORECASE),
+    re.compile(r"(?:टारगेट\s*प्राइस|स्टॉप\s*लॉस)", re.IGNORECASE),
     
     # Predictions of market movement
     re.compile(r"\b(?:will|is\s+going\s+to)\s+(?:rise|fall|double|triple|surge|skyrocket|crash|moon|zoom)\b", re.IGNORECASE),
     re.compile(r"\b(?:price\s+will\s+reach|guaranteed\s+profit\s+of)\b", re.IGNORECASE),
-    re.compile(r"\b(?:कीमत\s*बढ़ेगी|दोगुनी\s*होगी|गिरावट\s*आएगी|मुनाफा\s*होगा)\b", re.IGNORECASE),
+    re.compile(r"(?:कीमत\s*बढ़ेगी|दोगुनी\s*होगी|गिरावट\s*आएगी|मुनाफा\s*होगा)", re.IGNORECASE),
 
     # Recommendations of specific brokers or schemes
     re.compile(r"\b(?:best\s+broker|recommended\s+platform|join\s+this\s+scheme)\b", re.IGNORECASE),

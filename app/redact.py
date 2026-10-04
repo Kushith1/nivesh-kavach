@@ -27,13 +27,13 @@ PAN_PATTERN = re.compile(
     r"\b[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}\b"
 )
 AADHAAR_PATTERN = re.compile(
-    r"\b[2-9]\d{3}[-\s]?\d{4}[-\s]?\d{4}\b"
+    r"(?<!\d)[2-9]\d{3}[-\s]?\d{4}[-\s]?\d{4}(?!\d)"
 )
 PHONE_PATTERN = re.compile(
-    r"(?:(?:\+|00)91[-\s]?)?[6-9]\d{4}[-\s]?\d{5}\b"
+    r"(?<!\d)(?:(?:\+|00)91[-\s]?)?[6-9]\d{4}[-\s]?\d{5}(?!\d)"
 )
 ACCOUNT_PATTERN = re.compile(
-    r"\b\d{9,18}\b"
+    r"(?<!\d)\d{9,18}(?!\d)"
 )
 
 
