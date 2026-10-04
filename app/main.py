@@ -65,6 +65,21 @@ ANONYMOUS_METRICS = {
     "high_risk_flagged": 0
 }
 
+SIGNAL_WEIGHTS = {
+    "credential_request": (35, "high"),
+    "advance_fee": (32, "high"),
+    "impersonation": (30, "high"),
+    "suspicious_url": (30, "high"),
+    "unrealistic_returns": (25, "high"),
+    "unsolicited_windfall": (24, "high"),
+    "account_threat": (24, "high"),
+    "urgency": (18, "medium"),
+    "group_funnel": (16, "medium"),
+    "fake_testimonial": (18, "medium"),
+    "sebi_claim": (18, "medium"),
+    "image_review_needed": (45, "high"),
+}
+
 
 def cleanup_expired_cache():
     """Removes expired entries from in-memory cache."""
@@ -189,14 +204,30 @@ async def analyze_endpoint(
     formatted_ai_signals = []
     for sig in ai_extra_signals:
         cat = sig.get("category", "unverified_claim")
+        weight, severity = SIGNAL_WEIGHTS.get(cat, (14, "medium"))
         formatted_ai_signals.append({
             "id": f"AI_{cat.upper()}",
             "category": cat,
-            "weight": 14,
-            "severity": "medium",
+            "weight": weight,
+            "severity": severity,
             "evidence": sig.get("evidence_quote", ""),
             "why_dangerous": sig.get("why_dangerous", ""),
             "source": "ai"
+        })
+
+    if has_image and not has_text and not has_url and not (all_rule_signals or formatted_ai_signals):
+        all_rule_signals.append({
+            "id": "IMAGE_REVIEW_NEEDED",
+            "category": "image_review_needed",
+            "weight": 45,
+            "severity": "high",
+            "evidence": "image-only upload",
+            "why_dangerous": (
+                "The screenshot could not be read confidently by the analyzer. Do not treat this as safe; type or paste the visible text/link for a stronger check."
+                if lang == "en" else
+                "स्क्रीनशॉट को जांच प्रणाली स्पष्ट रूप से पढ़ नहीं पाई। इसे सुरक्षित न मानें; बेहतर जांच के लिए दिखाई देने वाला टेक्स्ट या लिंक टाइप/पेस्ट करें।"
+            ),
+            "source": "rule"
         })
 
     # Combine all signals
@@ -221,7 +252,9 @@ async def analyze_endpoint(
         ai_extra_signals=formatted_ai_signals,
         content_unclear=content_unclear
     )
-    risk_info = determine_risk_level(score, language=lang)
+    risk_info = determine_risk_level(
+        score, language=lang, ai_signal_count=len(formatted_ai_signals)
+    )
 
     # 8. Confidence evaluation
     raw_length = len(raw_text) + (len(submitted_url) if submitted_url else 0)

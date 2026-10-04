@@ -1,7 +1,7 @@
 {
   "verify_registration": {
     "id": "verify_registration",
-    "categories": ["sebi_claim", "impersonation"],
+    "categories": ["sebi_claim", "impersonation", "unsolicited_windfall", "account_threat"],
     "en": {
       "label": "SEBI Registered Intermediaries Directory",
       "url": "https://www.sebi.gov.in",
@@ -33,7 +33,7 @@
   },
   "report_fraud": {
     "id": "report_fraud",
-    "categories": ["credential_request", "immediate_transfer", "advance_fee", "fake_testimonial", "app_install", "foreign_or_crypto_double"],
+    "categories": ["credential_request", "immediate_transfer", "advance_fee", "fake_testimonial", "app_install", "foreign_or_crypto_double", "account_threat", "unsolicited_windfall"],
     "en": {
       "label": "National Cyber Crime Reporting Portal",
       "url": "https://cybercrime.gov.in",

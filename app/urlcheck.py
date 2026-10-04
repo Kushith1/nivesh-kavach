@@ -30,7 +30,8 @@ SHORTENERS = {
 SUSPICIOUS_TLDS = {
     "xyz", "top", "icu", "buzz", "click", "club", "site", "vip",
     "live", "loan", "work", "date", "racing", "download", "stream",
-    "rest", "gq", "cf", "tk", "ml", "ga"
+    "rest", "gq", "cf", "tk", "ml", "ga", "cc", "cfd", "cyou", "monster",
+    "mom", "sbs", "shop", "cam", "quest", "pw", "bar"
 }
 
 # Sensitive finance keywords
@@ -39,7 +40,36 @@ FINANCE_KEYWORDS = {
     "ipo", "trade", "wealth", "stock", "share", "crypto", "forex", "return", "bonus"
 }
 
+PROMO_LINK_KEYWORDS = {
+    "link", "click", "deal", "bonus", "cash", "win", "game", "earn", "reward", "promo"
+}
+
+PHISHING_BAIT_KEYWORDS = {
+    "account", "verify", "verification", "security", "secure", "login", "support",
+    "update", "unlock", "recover", "kyc", "password", "wallet", "billing", "payment"
+}
+
 OFFICIAL_BRANDS = ["sebi", "nsdl", "cdsl", "nseindia", "bseindia", "rbi"]
+
+COMMON_PHISHING_BRANDS = {
+    "amazon": {"amazon.com", "amazon.in"},
+    "netflix": {"netflix.com"},
+    "hdfc": {"hdfcbank.com", "hdfcbank.in"},
+    "hdfcbank": {"hdfcbank.com", "hdfcbank.in"},
+    "sbi": {"sbi.co.in", "onlinesbi.sbi"},
+    "icici": {"icicibank.com"},
+    "axis": {"axisbank.com"},
+    "kotak": {"kotak.com"},
+    "paytm": {"paytm.com"},
+    "phonepe": {"phonepe.com"},
+    "googlepay": {"pay.google.com"},
+    "gpay": {"pay.google.com"},
+    "whatsapp": {"whatsapp.com"},
+    "facebook": {"facebook.com"},
+    "instagram": {"instagram.com"},
+    "microsoft": {"microsoft.com"},
+    "apple": {"apple.com"},
+}
 
 IPV4_REGEX = re.compile(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
 
@@ -74,11 +104,20 @@ def is_official_domain(host: str) -> bool:
     return False
 
 
+def is_known_brand_domain(host: str, official_hosts: set[str]) -> bool:
+    """Checks exact domain/subdomain matches for commonly impersonated brands."""
+    host = host.lower().strip(".")
+    for official in official_hosts:
+        if host == official or host.endswith("." + official):
+            return True
+    return False
+
+
 def extract_urls(text: str) -> List[str]:
     """Finds URLs or domain-like strings in text."""
     url_pattern = re.compile(
         r"(?:https?://|www\.)[^\s/$.?#].[^\s]*|"
-        r"\b[a-zA-Z0-9.-]+\.(?:com|org|net|in|gov\.in|co\.in|xyz|top|icu|buzz|click|site|vip|me|info|biz)\b(?:/[^\s]*)?",
+        r"\b[a-zA-Z0-9.-]+\.(?:com|org|net|in|gov\.in|co\.in|xyz|top|icu|buzz|click|site|vip|me|info|biz|ly|cc|cfd|cyou|monster|mom|sbs|shop|cam|quest|pw|bar)\b(?:/[^\s]*)?",
         re.IGNORECASE
     )
     return url_pattern.findall(text)
@@ -172,7 +211,7 @@ def analyze_url_string(url_str: str, language: str = "en") -> Tuple[List[Dict[st
         signals.append({
             "id": "URL_NO_HTTPS",
             "category": "suspicious_url",
-            "weight": 12,
+            "weight": 20,
             "severity": "medium",
             "evidence": parsed.scheme + "://",
             "why_dangerous": (
@@ -252,7 +291,41 @@ def analyze_url_string(url_str: str, language: str = "en") -> Tuple[List[Dict[st
             "source": "rule"
         })
 
-    # 9. Lookalike of official domains:
+    # 9. Login/security/account bait words in an unofficial domain
+    found_bait = [kw for kw in PHISHING_BAIT_KEYWORDS if kw in host]
+    if found_bait:
+        signals.append({
+            "id": "URL_PHISHING_BAIT_WORDS",
+            "category": "suspicious_url",
+            "weight": 24,
+            "severity": "high",
+            "evidence": f"keywords: {', '.join(found_bait)} in {host}",
+            "why_dangerous": (
+                f"The domain uses login, account, security, or verification wording ({', '.join(found_bait)}) to imitate a trusted service."
+                if language == "en" else
+                f"डोमेन में लॉगिन, अकाउंट, सिक्योरिटी या वेरिफिकेशन जैसे शब्द ({', '.join(found_bait)}) हैं, जो भरोसेमंद सेवा की नकल कर सकते हैं।"
+            ),
+            "source": "rule"
+        })
+
+    # 10. Promo/link bait words in an unofficial domain
+    found_promo = [kw for kw in PROMO_LINK_KEYWORDS if kw in host]
+    if found_promo:
+        signals.append({
+            "id": "URL_PROMO_LINK_BAIT",
+            "category": "suspicious_url",
+            "weight": 24,
+            "severity": "medium",
+            "evidence": f"keywords: {', '.join(found_promo)} in {host}",
+            "why_dangerous": (
+                f"The domain contains promotional or link-bait wording ({', '.join(found_promo)}), often used in spam campaigns and fake reward funnels."
+                if language == "en" else
+                f"डोमेन में प्रचार या लिंक-बेट शब्द ({', '.join(found_promo)}) हैं, जिनका उपयोग नकली इनाम और स्पैम अभियानों में होता है।"
+            ),
+            "source": "rule"
+        })
+
+    # 11. Lookalike of official finance/regulator domains:
     # Check brand-in-domain
     for brand in OFFICIAL_BRANDS:
         if brand in host and not is_official_domain(host):
@@ -271,7 +344,49 @@ def analyze_url_string(url_str: str, language: str = "en") -> Tuple[List[Dict[st
             })
             break
 
-    # Check edit distance <= 2 against official domains
+    # 12. Common consumer/bank brand impersonation and typosquatting
+    labels = [part for part in parts if part]
+    joined_labels = "-".join(labels[:-1]) if len(labels) > 1 else host
+    for brand, official_hosts in COMMON_PHISHING_BRANDS.items():
+        if is_known_brand_domain(host, official_hosts):
+            continue
+
+        brand_seen = brand in joined_labels
+        typo_seen = False
+        typo_label = ""
+        for label in labels[:-1]:
+            label_tokens = [token for token in re.split(r"[-_]+", label) if token]
+            for token in [label, *label_tokens]:
+                dist = levenshtein_distance(token, brand)
+                if 0 < dist <= 2 and abs(len(token) - len(brand)) <= 2:
+                    typo_seen = True
+                    typo_label = token
+                    break
+            if typo_seen:
+                break
+
+        if brand_seen or typo_seen:
+            evidence = (
+                f"'{typo_label}' is similar to '{brand}' in non-official domain '{host}'"
+                if typo_seen else
+                f"'{brand}' found in non-official domain '{host}'"
+            )
+            signals.append({
+                "id": "URL_COMMON_BRAND_IMPERSONATION",
+                "category": "impersonation",
+                "weight": 32,
+                "severity": "high",
+                "evidence": evidence,
+                "why_dangerous": (
+                    f"The link appears to imitate the trusted brand '{brand}' but is not on that brand's official domain."
+                    if language == "en" else
+                    f"यह लिंक भरोसेमंद ब्रांड '{brand}' की नकल करता दिखता है, लेकिन उसके आधिकारिक डोमेन पर नहीं है।"
+                ),
+                "source": "rule"
+            })
+            break
+
+    # Check edit distance <= 2 against official finance domains
     main_domain_part = parts[0] if parts else ""
     for official in OFFICIAL_DOMAINS:
         off_main = official.split(".")[0]

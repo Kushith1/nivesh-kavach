@@ -33,7 +33,7 @@ PHONE_PATTERN = re.compile(
     r"(?<!\d)(?:(?:\+|00)91[-\s]?)?[6-9]\d{4}[-\s]?\d{5}(?!\d)"
 )
 ACCOUNT_PATTERN = re.compile(
-    r"(?<!\d)\d{9,18}(?!\d)"
+    r"(?<![A-Za-z0-9])\d{9,18}(?![A-Za-z0-9])"
 )
 
 

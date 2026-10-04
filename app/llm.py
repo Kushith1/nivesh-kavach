@@ -129,9 +129,20 @@ def analyze_with_gemini(
     model_name = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
     existing_categories = [s.get("category") for s in (existing_signals or [])]
+    image_instruction = ""
+    if image_bytes:
+        image_instruction = """
+An image/screenshot is attached. First read all visible text in the image using OCR-like visual understanding.
+Treat the visible screenshot text exactly like a suspicious message, including URLs shown in link preview cards.
+If visible text contains SEBI/official impersonation, IPO/profit bait, advance fees, OTP/PIN/password requests,
+urgent deadlines, suspicious domains, group/channel funneling, or "verified investor group" claims, return
+separate extra_signals for each warning category. Do not mark content_unclear merely because the content is
+inside an image. If the screenshot is readable and contains scam patterns, extra_signals must not be empty.
+"""
     user_prompt = f"""
 Language requested: {'Hindi (write explanation in Devanagari script)' if language == 'hi' else 'English'}.
 Existing warning categories already detected by rule engine: {', '.join(existing_categories) if existing_categories else 'None'}.
+{image_instruction}
 
 Content to analyze:
 \"\"\"{redacted_text}\"\"\"

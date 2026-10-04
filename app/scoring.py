@@ -6,7 +6,7 @@ evaluates confidence with transparent reasons, and maps relevant official cards.
 
 import json
 from pathlib import Path
-from typing import List, Dict, Any, Set, Tuple
+from typing import List, Dict, Any, Set, Tuple, Optional
 
 CARDS_FILE = Path(__file__).parent / "cards.json"
 
@@ -27,7 +27,17 @@ def compute_score(
     content_unclear: bool = False
 ) -> int:
     """
-    Computes a deterministic score (0-100) using diminishing returns.
+    Computes a deterministic score (0-100) using diminishing returns,
+    then applies scoring floors based on category presence and count.
+
+    Scoring floors (Step 2d):
+      - credential_request or advance_fee present → floor 45 (High)
+      - 3+ distinct categories → floor 45 (High)
+      - 5+ distinct categories → floor 70 (Very High)
+
+    AI contribution (Step 2e):
+      - If AI finds 2+ signals that rules missed, contribute capped AI score.
+      - Cap is 25 (not 0), so AI can meaningfully raise the score.
     """
     if not rule_signals and not ai_extra_signals:
         return 0
@@ -50,11 +60,34 @@ def compute_score(
     # AI extra signals contribution (capped at 25)
     ai_score = min(25.0, len(ai_extra_signals) * 12.0)
 
-    total = int(round(rule_score + ai_score))
-    return min(100, max(0, total))
+    raw_total = int(round(rule_score + ai_score))
+    raw_total = min(100, max(0, raw_total))
+
+    # --- Scoring floors ---
+    all_signals = rule_signals + ai_extra_signals
+    unique_categories: Set[str] = set(s.get("category", "") for s in all_signals)
+
+    floor = 0
+
+    # Floor: credential_request or advance_fee present → at least High (45)
+    HIGH_FLOOR_CATS = {"credential_request", "advance_fee"}
+    if unique_categories & HIGH_FLOOR_CATS:
+        floor = max(floor, 45)
+
+    # Floor: 3+ distinct categories → at least High (45)
+    if len(unique_categories) >= 3:
+        floor = max(floor, 45)
+
+    # Floor: 5+ distinct categories → Very High (70)
+    if len(unique_categories) >= 5:
+        floor = max(floor, 70)
+
+    return max(raw_total, floor)
 
 
-def determine_risk_level(score: int, language: str = "en") -> Dict[str, Any]:
+def determine_risk_level(
+    score: int, language: str = "en", ai_signal_count: int = 0
+) -> Dict[str, Any]:
     """
     Categorizes score into one of four standard levels:
     - < 20: "No strong warning signs found (this does NOT mean it is safe)"
@@ -62,6 +95,12 @@ def determine_risk_level(score: int, language: str = "en") -> Dict[str, Any]:
     - 45-69: "High risk"
     - 70+: "Very high risk"
     """
+    if score < 20 and ai_signal_count:
+        return {
+            "level": "Medium",
+            "score": score,
+            "headline": "Some warning signs detected" if language == "en" else "कुछ चेतावनी संकेत मिले हैं"
+        }
     if score < 20:
         return {
             "level": "Low",

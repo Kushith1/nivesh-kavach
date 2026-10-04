@@ -71,6 +71,34 @@
       "text": "Live proof: My friend earned 4 lakhs in 2 days from this platform! 100% guaranteed returns. Join group now: https://chat.whatsapp.com/fakeGroupCode",
       "language": "en",
       "expected_type": "scam"
+    },
+    {
+      "id": "E2",
+      "text": "Dear investor, your IPO allotment of 500 shares is approved. To release your profit of Rs 85,000, pay a processing fee of Rs 4,999 to UPI ID verify.fees@fakebank within 2 hours. Share the OTP you receive to confirm. - Investor Cell",
+      "language": "en",
+      "expected_type": "scam",
+      "expected_min_level": "High"
+    },
+    {
+      "id": "E4",
+      "text": "Official notice from NSDL and Government of India: your demat account is under verification. Pay Rs 999 to keep your shares safe. See how Mr. Sharma earned Rs 3 lakh in one week with our Premium Plan. Registration No. INA000000000. Call 90000 12345 now.",
+      "language": "en",
+      "expected_type": "scam",
+      "expected_min_level": "High"
+    },
+    {
+      "id": "H1",
+      "text": "बधाई हो! आपका IPO अलॉटमेंट मंज़ूर हो गया है। 85,000 रुपये का मुनाफ़ा पाने के लिए अगले 2 घंटे में 4,999 रुपये प्रोसेसिंग फीस भेजें। पुष्टि के लिए आपके फ़ोन पर आया ओटीपी हमें बताएं। - निवेशक सेवा केंद्र",
+      "language": "hi",
+      "expected_type": "scam",
+      "expected_min_level": "High"
+    },
+    {
+      "id": "H4",
+      "text": "सेबी और एनएसडीएल की ओर से सूचना: आपका डीमैट खाता सत्यापन में है। अपने शेयर सुरक्षित रखने के लिए 999 रुपये जमा करें। देखिए शर्मा जी ने सिर्फ़ एक हफ्ते में 3 लाख रुपये कमाए। रजिस्ट्रेशन नंबर INA000000000। अभी 90000 12345 पर कॉल करें।",
+      "language": "hi",
+      "expected_type": "scam",
+      "expected_min_level": "High"
     }
   ],
   "benign_samples": [
@@ -109,6 +137,20 @@
       "text": "SEBI public investor advisory: Investors are advised not to rely on unverified stock tips. Check registered entities on https://www.sebi.gov.in.",
       "language": "en",
       "expected_type": "benign"
+    },
+    {
+      "id": "B1",
+      "text": "Your SIP of Rs 500 will be debited on 5 Oct. Investments are subject to market risk. Never share your OTP with anyone.",
+      "language": "en",
+      "expected_type": "benign",
+      "expected_max_level": "Low"
+    },
+    {
+      "id": "B2",
+      "text": "निवेश करने से पहले जांच लें कि सलाहकार SEBI के पास पंजीकृत है या नहीं। किसी को भी OTP न बताएं।",
+      "language": "hi",
+      "expected_type": "benign",
+      "expected_max_level": "Low"
     }
   ],
   "ambiguous_samples": [
