@@ -290,18 +290,6 @@ input.text-input {
   border-radius: 4px;
 }
 
-/* Voice Box */
-.voice-box {
-  text-align: center;
-  padding: 16px;
-}
-
-.voice-status {
-  margin: 16px 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: #b91c1c;
-}
 
 /* Action Buttons */
 .action-buttons {

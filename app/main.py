@@ -273,8 +273,15 @@ async def analyze_endpoint(
         language=lang
     )
 
-    # If plain_explanation is empty or AI was unavailable, create structured explanation
-    if not plain_explanation or not ai_available:
+    # If AI was unavailable (e.g. error or 429), return exact specification fallback message.
+    # Otherwise, if AI succeeded but explanation was empty, provide structured summary.
+    if not ai_available:
+        plain_explanation = (
+            "Detailed explanation unavailable right now."
+            if lang == "en" else
+            "विस्तृत विवरण अभी उपलब्ध नहीं है।"
+        )
+    elif not plain_explanation:
         if lang == "hi":
             if score >= 45:
                 plain_explanation = f"इस संदेश में {len(all_signals)} गंभीर चेतावनी संकेत पाए गए हैं। इसमें बिना जोखिम या भारी मुनाफे का दावा किया गया है जो पोंजी स्कीम की ओर इशारा करता है।"

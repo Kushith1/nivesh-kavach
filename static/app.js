@@ -10,8 +10,6 @@
 
 let currentLangCode = "en";
 let selectedProcessedImageBlob = null;
-let recognition = null;
-let isListening = false;
 let isSpeaking = false;
 let currentReportTextForSpeech = "";
 
@@ -19,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initLanguageSelector();
   setupTabs();
   setupImageInput();
-  setupVoiceInput();
   setupAnalyzeButton();
   setupSpeechSynthesis();
   applyLanguage(currentLangCode);
@@ -150,75 +147,6 @@ function setupImageInput() {
   });
 }
 
-/* ----------------------------------------------------
- * Web Speech API (Voice Input)
- * ---------------------------------------------------- */
-function setupVoiceInput() {
-  const voiceBtn = document.getElementById("voiceToggleBtn");
-  const voiceStatus = document.getElementById("voiceStatusText");
-  const textInput = document.getElementById("textInput");
-
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    if (voiceBtn) {
-      voiceBtn.disabled = true;
-      voiceStatus.textContent = TRANSLATIONS[currentLangCode].voice_unsupported;
-    }
-    return;
-  }
-
-  recognition = new SpeechRecognition();
-  recognition.continuous = false;
-  recognition.interimResults = true;
-
-  voiceBtn.addEventListener("click", () => {
-    const t = TRANSLATIONS[currentLangCode];
-    if (isListening) {
-      recognition.stop();
-      isListening = false;
-      voiceBtn.textContent = t.btn_start_recording;
-      voiceStatus.textContent = "";
-      return;
-    }
-
-    const currentLangConfig = LANGS.find(l => l.code === currentLangCode) || LANGS[0];
-    recognition.lang = currentLangConfig.speech_tag;
-
-    try {
-      recognition.start();
-      isListening = true;
-      voiceBtn.textContent = t.btn_stop_recording;
-      voiceStatus.textContent = t.voice_listening;
-    } catch (err) {
-      console.warn("Speech recognition error:", err);
-    }
-  });
-
-  recognition.onresult = (event) => {
-    let transcript = "";
-    for (let i = event.resultIndex; i < event.results.length; ++i) {
-      transcript += event.results[i][0].transcript;
-    }
-    if (transcript) {
-      textInput.value = (textInput.value ? textInput.value + " " : "") + transcript;
-    }
-  };
-
-  recognition.onerror = (event) => {
-    console.warn("Speech recognition error event:", event.error);
-    isListening = false;
-    const t = TRANSLATIONS[currentLangCode];
-    voiceBtn.textContent = t.btn_start_recording;
-    voiceStatus.textContent = "";
-  };
-
-  recognition.onend = () => {
-    isListening = false;
-    const t = TRANSLATIONS[currentLangCode];
-    voiceBtn.textContent = t.btn_start_recording;
-    voiceStatus.textContent = "";
-  };
-}
 
 /* ----------------------------------------------------
  * SpeechSynthesis (Read Aloud)

@@ -163,3 +163,33 @@ def test_api_metrics():
     data = response.json()
     assert "total_scans" in data
     assert "high_risk_flagged" in data
+
+
+def test_api_ai_unavailable_returns_fallback_explanation(monkeypatch):
+    def fake_analyze_with_gemini(**kwargs):
+        lang = kwargs.get("language", "en")
+        msg = "Detailed explanation unavailable right now." if lang == "en" else "विस्तृत विवरण अभी उपलब्ध नहीं है।"
+        return False, {
+            "extra_signals": [],
+            "claims_to_verify": [],
+            "plain_explanation": msg,
+            "content_unclear": False,
+        }
+
+    monkeypatch.setattr(main, "analyze_with_gemini", fake_analyze_with_gemini)
+
+    response = client.post(
+        "/api/analyze",
+        data={
+            "text": "Earn 10% daily guaranteed profit in our exclusive crypto doubling pool. Send 500 USDT now.",
+            "language": "en"
+        }
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["ai_available"] is False
+    assert data["plain_explanation"] == "Detailed explanation unavailable right now."
+    # Rules still fired
+    assert data["risk"]["score"] >= 45
+    assert len(data["signals"]) >= 1
+

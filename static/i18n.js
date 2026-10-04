@@ -20,7 +20,6 @@ const TRANSLATIONS = {
     tab_text: "📝 Paste Text",
     tab_screenshot: "🖼️ Screenshot",
     tab_link: "🔗 Check Link",
-    tab_voice: "🎙️ Speak",
 
     // Input fields
     text_placeholder: "Paste suspicious WhatsApp, Telegram, SMS, or social media investment message here...",
@@ -33,14 +32,6 @@ const TRANSLATIONS = {
     image_label: "Upload Screenshot of Chat / Offer / Chart (Max 4 MB):",
     image_crop_warning: "⚠️ Crucial: Crop or blur your personal balance, bank details, and account numbers before uploading. Screenshots are processed in temporary memory only and re-encoded locally (max 1024px, EXIF data stripped).",
     image_selected: "Selected file:",
-
-    voice_title: "Voice Input (Speech-to-Text)",
-    voice_desc: "Speak the investment offer or message you received in your preferred language.",
-    voice_cloud_notice: "ℹ️ Browser Notice: Voice input uses your browser's speech engine. Your device may send audio to a speech service to convert speech into text.",
-    btn_start_recording: "🎙️ Start Speaking",
-    btn_stop_recording: "⏹️ Stop Recording",
-    voice_listening: "Listening... Please speak now.",
-    voice_unsupported: "Speech recognition is not supported in this browser. Please use the Text tab.",
 
     // Action buttons
     btn_analyze: "🛡️ Analyze for Warning Signs",
@@ -92,7 +83,6 @@ const TRANSLATIONS = {
     tab_text: "📝 संदेश लिखें / पेस्ट करें",
     tab_screenshot: "🖼️ स्क्रीनशॉट",
     tab_link: "🔗 लिंक जांचें",
-    tab_voice: "🎙️ बोलकर बताएं",
 
     // Input fields
     text_placeholder: "संदिग्ध व्हाट्सऐप, टेलीग्राम, एसएमएस या सोशल मीडिया संदेश यहाँ पेस्ट करें...",
@@ -105,14 +95,6 @@ const TRANSLATIONS = {
     image_label: "चैट, ऑफर या मुनाफे के स्क्रीनशॉट की फोटो (अधिकतम 4 MB):",
     image_crop_warning: "⚠️ जरूरी सूचना: स्क्रीनशॉट से अपना बैंक बैलेंस, खाता संख्या या निजी जानकारी पहले ही क्रॉप या छिपा लें। फोटो केवल अस्थायी मेमोरी में प्रोसेस की जाती है और आपके डिवाइस पर री-साइज (अधिकतम 1024px) होती है।",
     image_selected: "चुनी गई फाइल:",
-
-    voice_title: "आवाज से इनपुट (Speech-to-Text)",
-    voice_desc: "संदिग्ध निवेश ऑफर या संदेश को बोलकर दर्ज करें।",
-    voice_cloud_notice: "ℹ️ ब्राउज़र सूचना: आवाज इनपुट आपके ब्राउज़र की स्पीच तकनीक का उपयोग करता है। आवाज को टेक्स्ट में बदलने के लिए ब्राउज़र सेवा का उपयोग हो सकता है।",
-    btn_start_recording: "🎙️ बोलना शुरू करें",
-    btn_stop_recording: "⏹️ बोलना बंद करें",
-    voice_listening: "सुन रहे हैं... कृपया अब बोलें।",
-    voice_unsupported: "इस ब्राउज़र में आवाज पहचान उपलब्ध नहीं है। कृपया टेक्स्ट टैब का उपयोग करें।",
 
     // Action buttons
     btn_analyze: "🛡️ खतरे के संकेतों की जांच करें",

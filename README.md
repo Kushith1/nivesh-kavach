@@ -18,7 +18,7 @@ Nivesh Kavach operates on a layered, fail-safe architecture where deterministic 
 
 ```mermaid
 flowchart TD
-    User([User Input: Text / URL / Screenshot / Voice]) --> ClientSide[Client-Side Canvas / i18n / WebSpeech]
+    User([User Input: Text / URL / Screenshot]) --> ClientSide[Client-Side Canvas / i18n / Local Processing]
     ClientSide --> Redaction[redact.py: PII Redaction Layer<br/>Phone, Aadhaar, PAN, UPI, Email, OTP]
     Redaction --> HashCache[In-Memory TTL Cache<br/>Keyed by SHA256 of Redacted Content]
     
@@ -85,8 +85,7 @@ Nivesh Kavach enforces strict privacy guardrails:
 - **System Font Stack**: Uses native system fonts (`Nirmala UI`, `Segoe UI`, `Roboto`) to display Devanagari with zero web-font latency and high contrast.
 - **Accessible Risk Display**: Risk levels are never conveyed by color alone; they always include a descriptive icon, severity level name, and explanatory headline.
 - **Voice Read-Aloud**: Uses `window.speechSynthesis` with device language detection.
-- **Voice Input**: Web Speech API with explicit cloud processing transparency notice.
-- **Total Frontend Asset Weight**: **~48 KB** (well under the 150 KB limit), with **zero external CDN dependencies**.
+- **Total Frontend Asset Weight**: **~44 KB** (well under the 150 KB limit), with **zero external CDN dependencies**.
 
 ---
 
@@ -176,4 +175,4 @@ python eval.py
 
 1. **Synthetic Evaluation Dataset**: The included benchmark (`tests/samples.json`) contains 21 synthetic, fictional samples designed for hackathon validation; real-world adversary variations are broader.
 2. **Static URL String Heuristics**: Because Nivesh Kavach adheres to the strict rule of never fetching external URLs, newly registered domains without obvious suspicious keywords may not trigger URL heuristic rules.
-3. **Browser Speech Engine Dependency**: Web Speech API speech-to-text and read-aloud depend on local browser/OS voice packs. On devices without Hindi TTS voices, the system gracefully falls back to text display.
+3. **Browser Speech Synthesis Dependency**: Read-aloud depends on local browser/OS voice packs. On devices without Hindi TTS voices, the system gracefully falls back to text display.
