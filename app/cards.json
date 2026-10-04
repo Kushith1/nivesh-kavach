@@ -1,0 +1,114 @@
+{
+  "verify_registration": {
+    "id": "verify_registration",
+    "categories": ["sebi_claim", "impersonation"],
+    "en": {
+      "label": "SEBI Registered Intermediaries Directory",
+      "url": "https://www.sebi.gov.in",
+      "note": "Visit sebi.gov.in -> Intermediaries / Market Infrastructure Institutions -> Recognised Intermediaries. Note: A registration number claim in an informal message or screenshot is NEVER proof of legitimacy.",
+      "action": "Check the official SEBI list to confirm whether the entity actually exists and matches the contact details."
+    },
+    "hi": {
+      "label": "सेबी पंजीकृत मध्यस्थ निर्देशिका",
+      "url": "https://www.sebi.gov.in",
+      "note": "sebi.gov.in पर जाएं -> Intermediaries -> Recognised Intermediaries। याद रखें: किसी संदेश में लिखा रजिस्ट्रेशन नंबर असली होने का प्रमाण नहीं है।",
+      "action": "सेबी की आधिकारिक वेबसाइट पर जाकर जांचें कि क्या संस्था वास्तव में पंजीकृत है।"
+    }
+  },
+  "sebi_check": {
+    "id": "sebi_check",
+    "categories": ["sebi_claim", "immediate_transfer", "advance_fee"],
+    "en": {
+      "label": "SEBI Check Portal (Account & UPI Verification)",
+      "url": "https://siportal.sebi.gov.in/intermediary/sebi-check",
+      "note": "Verify whether the bank account or UPI ID belongs to a legitimate SEBI-registered intermediary before transferring any money.",
+      "action": "Never transfer funds to personal or unverified UPI IDs claiming to represent brokers or advisors."
+    },
+    "hi": {
+      "label": "सेबी चेक पोर्टल (खाता एवं यूपीआई सत्यापन)",
+      "url": "https://siportal.sebi.gov.in/intermediary/sebi-check",
+      "note": "पैसे भेजने से पहले सत्यापित करें कि बैंक खाता या यूपीआई आईडी पंजीकृत मध्यस्थ का है या नहीं।",
+      "action": "ब्रोकर या सलाहकार का दावा करने वाले किसी भी व्यक्तिगत यूपीआई पते पर पैसे कभी न भेजें।"
+    }
+  },
+  "report_fraud": {
+    "id": "report_fraud",
+    "categories": ["credential_request", "immediate_transfer", "advance_fee", "fake_testimonial", "app_install", "foreign_or_crypto_double"],
+    "en": {
+      "label": "National Cyber Crime Reporting Portal",
+      "url": "https://cybercrime.gov.in",
+      "note": "Dial 1930 immediately (24/7 National Cyber Fraud Helpline) or report on cybercrime.gov.in. Report quickly; quick reporting improves odds, but recovery is not guaranteed.",
+      "action": "If you have sent money or shared credentials, call 1930 and inform your bank right away to block transactions."
+    },
+    "hi": {
+      "label": "राष्ट्रीय साइबर अपराध रिपोर्टिंग पोर्टल",
+      "url": "https://cybercrime.gov.in",
+      "note": "तुरंत 1930 पर कॉल करें (24 घंटे साइबर हेल्पलाइन) या cybercrime.gov.in पर शिकायत दर्ज करें। जल्दी रिपोर्ट करें, हालांकि पैसे वापसी की गारंटी नहीं होती।",
+      "action": "यदि आपने पैसे ट्रांसफर किए हैं या विवरण साझा किया है, तो तुरंत 1930 पर कॉल करें और बैंक को सूचित करें।"
+    }
+  },
+  "complaint_registered_entity": {
+    "id": "complaint_registered_entity",
+    "categories": ["sebi_claim"],
+    "en": {
+      "label": "SEBI SCORES Portal & Toll-Free Helpline",
+      "url": "https://scores.sebi.gov.in",
+      "note": "Lodge complaints against registered/listed intermediaries on SCORES. Toll-free numbers: 1800 22 7575 / 1800 266 7575.",
+      "action": "Use SCORES only for complaints against genuinely registered market entities."
+    },
+    "hi": {
+      "label": "सेबी स्कोर्स (SCORES) पोर्टल एवं टोल-फ्री हेल्पलाइन",
+      "url": "https://scores.sebi.gov.in",
+      "note": "पंजीकृत संस्थाओं के विरुद्ध शिकायत के लिए SCORES का उपयोग करें। टोल-फ्री नंबर: 1800 22 7575 / 1800 266 7575।",
+      "action": "केवल वास्तविक पंजीकृत मध्यस्थों के खिलाफ शिकायत के लिए SCORES का प्रयोग करें।"
+    }
+  },
+  "never_share_otp": {
+    "id": "never_share_otp",
+    "categories": ["credential_request"],
+    "en": {
+      "label": "Critical Warning: Never Share OTP / Passwords",
+      "url": "https://cybercrime.gov.in",
+      "note": "No bank, SEBI official, or legitimate broker will EVER ask for your OTP, PIN, password, or CVV. Sharing an OTP gives complete access to empty your accounts.",
+      "action": "Do not enter or speak your OTP to anyone claiming to activate trading accounts or process withdrawals."
+    },
+    "hi": {
+      "label": "महत्वपूर्ण चेतावनी: कभी भी ओटीपी या पिन साझा न करें",
+      "url": "https://cybercrime.gov.in",
+      "note": "कोई भी बैंक, सेबी अधिकारी या वैध ब्रोकर कभी भी आपसे OTP, पिन या पासवर्ड नहीं मांगता। OTP बताने पर आपका खाता खाली हो सकता है।",
+      "action": "खाता सक्रिय करने या पैसे निकालने के नाम पर किसी को भी अपना ओटीपी न बताएं।"
+    }
+  },
+  "group_tips_warning": {
+    "id": "group_tips_warning",
+    "categories": ["insider_tips", "group_funnel", "referral_scheme", "secrecy"],
+    "en": {
+      "label": "Warning: Unauthorized Social Media Tip Channels",
+      "url": "https://www.sebi.gov.in",
+      "note": "SEBI does not authorize WhatsApp/Telegram groups for stock recommendations, 'operator tips', or insider trading schemes. These are classic pump-and-dump traps.",
+      "action": "Exit unauthorized tip channels immediately. Never trade on anonymous insider tips."
+    },
+    "hi": {
+      "label": "चेतावनी: सोशल मीडिया टिप ग्रुप्स और चैनल",
+      "url": "https://www.sebi.gov.in",
+      "note": "सेबी व्हाट्सएप/टेलीग्राम ग्रुप पर 'ऑपरेटर टिप' या 'इनसाइडर टिप' देने की अनुमति नहीं देता। ये अक्सर धोखाधड़ी (पंप और डंप) होते हैं।",
+      "action": "ऐसे अनाधिकृत ग्रुप्स से तुरंत बाहर निकलें। अनजान लोगों की टिप्स पर कभी निवेश न करें।"
+    }
+  },
+  "guaranteed_returns_warning": {
+    "id": "guaranteed_returns_warning",
+    "categories": ["guaranteed_returns", "unrealistic_returns", "risk_free", "foreign_or_crypto_double"],
+    "en": {
+      "label": "Warning: Guaranteed & High Fixed Return Trap",
+      "url": "https://www.sebi.gov.in",
+      "note": "All genuine market investments carry market risk. Anyone promising guaranteed, risk-free, daily, or doubled returns is deceiving you.",
+      "action": "Refuse offers promising guaranteed profits or zero risk. High assured returns are an indicator of Ponzi schemes."
+    },
+    "hi": {
+      "label": "चेतावनी: गारंटीड रिटर्न और पैसा दोगुना करने का झांसा",
+      "url": "https://www.sebi.gov.in",
+      "note": "शेयर बाज़ार या किसी भी निवेश में जोखिम होता है। निश्चित गारंटी, बिना जोखिम या रोज़ाना मुनाफे का वादा पोंजी स्कीम की निशानी है।",
+      "action": "बिना जोखिम या पक्के मुनाफे के दावों से दूर रहें। वैध बाजार में कोई भी गारंटीड रिटर्न नहीं दे सकता।"
+    }
+  }
+}
