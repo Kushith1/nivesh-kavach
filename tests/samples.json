@@ -1,0 +1,134 @@
+{
+  "scam_samples": [
+    {
+      "id": "SCAM_01",
+      "text": "सेबी रजिस्टर्ड एक्सपर्ट से पक्की टिप! 100% गारंटी, रोज़ 5000 कमाएं। आज ही ग्रुप जॉइन करें, सिर्फ़ 20 सीट बाकी। किसी को मत बताना।",
+      "language": "hi",
+      "expected_type": "scam"
+    },
+    {
+      "id": "SCAM_02",
+      "text": "Sir pakka munafa guaranteed hai, risk free. Abhi 10,000 transfer karo aur kal paisa double. OTP batao to account activate ho jayega.",
+      "language": "en",
+      "expected_type": "scam"
+    },
+    {
+      "id": "SCAM_03",
+      "text": "Hamare VIP group me join kijiye, operator tip milegi. Refer and earn bhi hai, har member pe commission. Link: http://invest-vip-profit.xyz/join",
+      "language": "en",
+      "expected_type": "scam"
+    },
+    {
+      "id": "SCAM_04",
+      "text": "Earn 10% daily guaranteed profit in our exclusive crypto doubling pool. Send 500 USDT now to start. Zero risk.",
+      "language": "en",
+      "expected_type": "scam"
+    },
+    {
+      "id": "SCAM_05",
+      "text": "Exclusive SEBI authorized institutional desk! Limited seats for tomorrow's jackpot call. Transfer 15,000 immediately to reserve your slot.",
+      "language": "en",
+      "expected_type": "scam"
+    },
+    {
+      "id": "SCAM_06",
+      "text": "बधाई हो! आपका 1,50,000 रुपये का मुनाफा तैयार है। निकासी के लिए 2,500 रुपये टैक्स फीस तुरंत ट्रांसफर करें।",
+      "language": "hi",
+      "expected_type": "scam"
+    },
+    {
+      "id": "SCAM_07",
+      "text": "Download our new private trading app APK at http://t.ly/trade-app. Guaranteed 50,000 per month profit. Don't tell anyone.",
+      "language": "en",
+      "expected_type": "scam"
+    },
+    {
+      "id": "SCAM_08",
+      "text": "NSE operator call available! Sure shot 100% profit today in penny stocks. Join our Telegram VIP channel: https://t.me/sure_shot_profits",
+      "language": "en",
+      "expected_type": "scam"
+    },
+    {
+      "id": "SCAM_09",
+      "text": "Sir aapka trading account block ho gaya hai. Abhi OTP batao turant unblock kar denge aur bonus activate hoga.",
+      "language": "en",
+      "expected_type": "scam"
+    },
+    {
+      "id": "SCAM_10",
+      "text": "बिना किसी जोखिम के घर बैठे रोज़ 10,000 कमाएं। सिर्फ आज ही मौका, 10 मेंबर जोड़ें और लाइफटाइम रेफरल कमीशन पाएं।",
+      "language": "hi",
+      "expected_type": "scam"
+    },
+    {
+      "id": "SCAM_11",
+      "text": "Official RBI officer announcement: Special government approved high yield investment fund. Register now before midnight: http://192.168.1.50/invest",
+      "language": "en",
+      "expected_type": "scam"
+    },
+    {
+      "id": "SCAM_12",
+      "text": "Live proof: My friend earned 4 lakhs in 2 days from this platform! 100% guaranteed returns. Join group now: https://chat.whatsapp.com/fakeGroupCode",
+      "language": "en",
+      "expected_type": "scam"
+    }
+  ],
+  "benign_samples": [
+    {
+      "id": "BENIGN_01",
+      "text": "आपके खाते से 500 रुपये की SIP आज कटेगी। निवेश बाज़ार जोखिमों के अधीन है। कृपया किसी के साथ OTP साझा न करें।",
+      "language": "hi",
+      "expected_type": "benign"
+    },
+    {
+      "id": "BENIGN_02",
+      "text": "Your monthly mutual fund statement for folio 987654321 has been generated. Please review your portfolio performance.",
+      "language": "en",
+      "expected_type": "benign"
+    },
+    {
+      "id": "BENIGN_03",
+      "text": "Dear customer, Rs 12,000 has been debited towards purchase of 10 shares on BSE. Securities investments are subject to market risks.",
+      "language": "en",
+      "expected_type": "benign"
+    },
+    {
+      "id": "BENIGN_04",
+      "text": "आरबीआई की ओर से जनहित में जारी संदेश: कभी भी अपना बैंक पासवर्ड या गोपनीय जानकारी किसी के साथ साझा न करें। सतर्क रहें, सुरक्षित रहें।",
+      "language": "hi",
+      "expected_type": "benign"
+    },
+    {
+      "id": "BENIGN_05",
+      "text": "Your Demat account ending with 4321 is active. For any grievances, visit official exchange portal https://nseindia.com.",
+      "language": "en",
+      "expected_type": "benign"
+    },
+    {
+      "id": "BENIGN_06",
+      "text": "SEBI public investor advisory: Investors are advised not to rely on unverified stock tips. Check registered entities on https://www.sebi.gov.in.",
+      "language": "en",
+      "expected_type": "benign"
+    }
+  ],
+  "ambiguous_samples": [
+    {
+      "id": "AMBIGUOUS_01",
+      "text": "Hey check out this interesting technical chart analysis for next quarter financial sector performance.",
+      "language": "en",
+      "expected_type": "ambiguous"
+    },
+    {
+      "id": "AMBIGUOUS_02",
+      "text": "क्या आप इस कंपनी के बारे में कुछ जानते हैं? मुझे किसी सहकर्मी ने इसका नाम बताया था।",
+      "language": "hi",
+      "expected_type": "ambiguous"
+    },
+    {
+      "id": "AMBIGUOUS_03",
+      "text": "Looking for advice on diversified index funds for long term retirement planning with steady growth.",
+      "language": "en",
+      "expected_type": "ambiguous"
+    }
+  ]
+}
