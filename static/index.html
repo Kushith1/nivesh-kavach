@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nivesh Kavach - Pause. Check. Then decide.</title>
+  <meta name="description" content="Safety checker for suspicious investment messages, screenshots, and links for Indian retail investors.">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Header & Language Selector -->
+    <header class="header-box">
+      <div class="header-top">
+        <div class="brand-wrapper">
+          <span class="shield-icon" aria-hidden="true">🛡️</span>
+          <div>
+            <h1 class="app-title" data-i18n="app_title">Nivesh Kavach</h1>
+            <div class="tagline" data-i18n="app_tagline">Pause. Check. Then decide.</div>
+          </div>
+        </div>
+
+        <div class="lang-selector-box">
+          <label for="langSelect">🌐 Language / भाषा:</label>
+          <select id="langSelect" class="lang-select" aria-label="Select Interface Language">
+            <!-- Populated via i18n.js -->
+          </select>
+        </div>
+      </div>
+
+      <p class="hero-desc" data-i18n="hero_desc">
+        A safety checker that analyses suspicious investment messages, screenshots, and links for Indian retail investors.
+      </p>
+
+      <div class="privacy-banner" role="note" data-i18n="privacy_note">
+        🔒 Privacy First: Zero database. We never store your text or images. In-memory safety analysis only.
+      </div>
+    </header>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="tabs-nav" aria-label="Input Mode Tabs">
+      <button type="button" class="tab-btn active" data-tab="tabText" data-i18n="tab_text">📝 Paste Text</button>
+      <button type="button" class="tab-btn" data-tab="tabScreenshot" data-i18n="tab_screenshot">🖼️ Screenshot</button>
+      <button type="button" class="tab-btn" data-tab="tabLink" data-i18n="tab_link">🔗 Check Link</button>
+      <button type="button" class="tab-btn" data-tab="tabVoice" data-i18n="tab_voice">🎙️ Speak</button>
+    </nav>
+
+    <!-- Input Form Section -->
+    <main class="input-panel">
+      
+      <!-- Tab 1: Paste Text -->
+      <div id="tabText" class="tab-content active">
+        <label for="textInput" class="field-label" data-i18n="tab_text">📝 Suspicious Message Text:</label>
+        <textarea 
+          id="textInput" 
+          class="main-textarea" 
+          rows="6" 
+          data-i18n-placeholder="text_placeholder"
+          placeholder="Paste suspicious WhatsApp, Telegram, SMS, or social media investment message here..."
+        ></textarea>
+        <p class="field-hint" data-i18n="text_hint">
+          Tip: Sensitive personal details (phones, PAN, Aadhaar, account numbers) are automatically redacted before analysis.
+        </p>
+      </div>
+
+      <!-- Tab 2: Screenshot Upload -->
+      <div id="tabScreenshot" class="tab-content">
+        <div class="crop-warning" role="alert" data-i18n="image_crop_warning">
+          ⚠️ Crucial: Crop or blur your personal balance, bank details, and account numbers before uploading. Screenshots are processed in temporary memory only and re-encoded locally (max 1024px, EXIF data stripped).
+        </div>
+        <label for="imageFileInput" class="field-label" data-i18n="image_label">Upload Screenshot of Chat / Offer / Chart (Max 4 MB):</label>
+        <div class="file-upload-wrapper">
+          <input type="file" id="imageFileInput" class="file-input" accept="image/png, image/jpeg, image/jpg, image/webp" />
+        </div>
+        <div id="imagePreviewBox" class="image-preview-box">
+          <img id="imagePreview" alt="Screenshot Preview" />
+        </div>
+      </div>
+
+      <!-- Tab 3: URL Link -->
+      <div id="tabLink" class="tab-content">
+        <label for="urlInput" class="field-label" data-i18n="url_label">Investment Link / URL to analyze:</label>
+        <input 
+          type="text" 
+          id="urlInput" 
+          class="text-input" 
+          data-i18n-placeholder="url_placeholder"
+          placeholder="e.g., http://invest-vip-profit.xyz/join or sebi-portal-kyc.com"
+        />
+        <div class="notice-box" role="note" data-i18n="url_notice">
+          ⚠️ Safety Notice: We NEVER visit, fetch, or open user-submitted links. Only the link's text string structure is inspected for phishing signs.
+        </div>
+      </div>
+
+      <!-- Tab 4: Speak (Voice Input) -->
+      <div id="tabVoice" class="tab-content">
+        <div class="voice-box">
+          <h2 style="font-size: 20px; margin-bottom: 8px;" data-i18n="voice_title">Voice Input (Speech-to-Text)</h2>
+          <p style="margin-bottom: 12px;" data-i18n="voice_desc">Speak the investment offer or message you received in your preferred language.</p>
+          <div class="notice-box" style="margin-bottom: 16px;" data-i18n="voice_cloud_notice">
+            ℹ️ Browser Notice: Voice input uses your browser's speech engine. Your device may send audio to a speech service to convert speech into text.
+          </div>
+          <button type="button" id="voiceToggleBtn" class="primary-btn" style="max-width: 320px; margin: 0 auto; display: block;" data-i18n="btn_start_recording">
+            🎙️ Start Speaking
+          </button>
+          <div id="voiceStatusText" class="voice-status"></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button type="button" id="analyzeBtn" class="primary-btn" data-i18n="btn_analyze">
+          🛡️ Analyze for Warning Signs
+        </button>
+        <button type="button" id="clearBtn" class="secondary-btn" data-i18n="btn_clear">
+          🔄 Clear / Reset
+        </button>
+      </div>
+    </main>
+
+    <!-- Results Section -->
+    <section id="resultsContainer" class="results-container" aria-live="polite">
+      
+      <!-- Results Header with Read Aloud Button -->
+      <div class="results-header">
+        <h2 data-i18n="results_title">Safety Analysis Report</h2>
+        <button type="button" id="readAloudBtn" class="speech-btn" data-i18n="btn_read_aloud">
+          🔊 Read Aloud
+        </button>
+      </div>
+
+      <!-- Risk Level Summary Card (Accessible: Color + Icon + Words) -->
+      <div id="riskCard" class="risk-card risk-low">
+        <div id="riskBadge" class="risk-badge">
+          <span>🟢</span> <span>Low Risk</span>
+        </div>
+        <div id="riskHeadline" class="risk-headline"></div>
+        <div id="riskScoreText" class="risk-score-pill"></div>
+      </div>
+
+      <!-- Plain Explanation -->
+      <div class="report-section">
+        <h3 class="section-title" data-i18n="explanation_title">💡 Simple Plain-Language Explanation</h3>
+        <div id="explanationContent" class="explanation-box"></div>
+      </div>
+
+      <!-- Warning Signals -->
+      <div class="report-section">
+        <h3 class="section-title" data-i18n="signals_title">🚩 Identified Warning Signs & Red Flags</h3>
+        <div id="signalsList" class="signals-list"></div>
+      </div>
+
+      <!-- Claims to Verify -->
+      <div id="claimsSection" class="report-section" style="display: none;">
+        <h3 class="section-title" data-i18n="claims_title">🔍 Claims Requiring Independent Verification</h3>
+        <p class="field-hint" style="margin-bottom: 12px;" data-i18n="claims_notice">
+          The content claims regulatory approval or registration. NEVER accept claims without checking official portals yourself.
+        </p>
+        <div id="claimsList"></div>
+      </div>
+
+      <!-- Recommended Next Steps -->
+      <div class="report-section">
+        <h3 class="section-title" data-i18n="next_steps_title">🛡️ Recommended Safe Next Steps</h3>
+        <ul id="nextStepsList" class="next-steps-list"></ul>
+      </div>
+
+      <!-- Official Regulatory Links -->
+      <div class="report-section">
+        <h3 class="section-title" data-i18n="official_links_title">🏛️ Authorized Regulators & Support Portals</h3>
+        <p class="field-hint" data-i18n="official_links_notice">
+          Only visit verified regulatory and fraud helpline websites:
+        </p>
+        <div id="officialLinksList" class="official-links-list"></div>
+      </div>
+
+      <!-- Confidence & Reasons -->
+      <div class="report-section">
+        <h3 class="section-title" data-i18n="confidence_title">🎯 Analysis Confidence</h3>
+        <div class="confidence-box">
+          <div id="confidenceLevelText" class="confidence-header"></div>
+          <div style="font-weight: 700; margin-bottom: 4px;" data-i18n="confidence_reasons">Basis for confidence rating:</div>
+          <ul id="confidenceReasonsList" class="reasons-list"></ul>
+        </div>
+      </div>
+
+      <!-- Mandatory Regulatory Disclaimer -->
+      <footer class="disclaimer-box">
+        <div style="font-weight: 800; margin-bottom: 4px;" data-i18n="disclaimer_title">Mandatory Regulatory Disclaimer</div>
+        <div id="disclaimerText"></div>
+      </footer>
+
+    </section>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="/static/i18n.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -349,7 +349,7 @@ def extract_claims_to_verify(text: str, language: str = "en") -> List[Dict[str, 
             })
 
     # Check for general SEBI / RBI / Govt registration claims without specific number
-    if not reg_matches and re.search(r"\b(sebi|rbi|nsdl|government)\b", text, re.I):
+    if not reg_matches and re.search(r"(?:\b(sebi|rbi|nsdl|government)\b|सेबी|आरबीआई|एनएसडीएल|सरकार)", text, re.IGNORECASE):
         if language == "hi":
             claims.append({
                 "claim": "संदेश में सेबी/आरबीआई/सरकारी अनुमोदन या पंजीकरण का दावा है।",
